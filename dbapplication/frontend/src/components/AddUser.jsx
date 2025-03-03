@@ -1,40 +1,47 @@
-import { useState } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 
 const AddUser = ({ onUserAdded }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!name || !email) return;
-
-    try {
-      await axios.post("http://localhost:3000/users", { name, email });
-      onUserAdded(); // Refresh the user list
+    if (name && email) {
+      onUserAdded(name, email);
       setName("");
       setEmail("");
-    } catch (error) {
-      console.error("Error adding user:", error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="add-user-form">
-      <input
-        type="text"
-        placeholder="Name"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <button type="submit">Add User</button>
-    </form>
+    <div className="card p-4 mb-4 shadow-sm">
+      <h3 className="mb-3">Add New User</h3>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-3">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+        </div>
+        <div className="mb-3">
+          <input
+            type="email"
+            className="form-control"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </div>
+        <button type="submit" className="btn btn-primary w-100">
+          Add User
+        </button>
+      </form>
+    </div>
   );
 };
 
